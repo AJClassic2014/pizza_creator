@@ -10,6 +10,8 @@ Make an order by choosing toppings on the pizza and get the total price automati
 
 *No need to compile and start with node_module dependencies 
 
+![](pizza_creator.PNG)
+
 ### What were using
 
 * React 16
