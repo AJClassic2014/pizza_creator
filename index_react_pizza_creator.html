@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>New Pizza Creator</title>
+  <link rel="stylesheet" type="text/css" href="style_react.css" />
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+
+  <script type="text/babel" data-presets="react">
+    const SectionTitle = ({
+      children
+    }) => (
+      <div>{children}</div>
+    )
+    const TextBox = ({ title, value, onChange }) => (
+      <div className="textBox">
+        <label>{title}</label>
+        <input value={value} onChange={({ target: { value }}) => onChange(value)} type="text" />  
+      </div>
+    )
+    const Form = ({ 
+      name, 
+      email, 
+      address, 
+      postcode, 
+      confirmEmail, 
+      contactNumber, 
+      onNameChange, 
+      onEmailChange, 
+      onAddressChange, 
+      onPostcodeChange, 
+      onConfirmEmailChange, 
+      onContactNumberChange, 
+    }) => (
+      <div>
+        <SectionTitle><h2>Enter Your Details</h2></SectionTitle>
+        <div className="formFields">
+          <TextBox value={name} onChange={onNameChange} title="Name" />  
+          <TextBox value={email} onChange={onEmailChange} title="Email" />  
+          <TextBox value={address} onChange={onAddressChange} title="Address" />  
+          <TextBox value={postcode} onChange={onPostcodeChange} title="Postcode" />  
+          <TextBox value={confirmEmail} onChange={onConfirmEmailChange} title="Confirm Email" />  
+          <TextBox value={contactNumber} onChange={onContactNumberChange} title="Contact Number" />  
+        </div>
+      </div>
+    );
+    const Topping = ({
+      imgSrc,
+      name,
+      className,
+      onClick,
+    }) => (
+      <div className={`${className} topping`} onClick={onClick}>
+        <img src={imgSrc} alt="name" />
+        <div><span>{name}</span></div>  
+      </div>
+    )
+    const Toppings = ({
+      toppings, 
+      selectedToppings, 
+      toggleSelectedTopping,
+    }) => (
+      <div>
+        <SectionTitle><h2>Choose Your Toppings</h2></SectionTitle>
+        <div className="toppings">
+          {toppings.map((topping) => {
+            const { name, labelImage } = topping;
+            return(
+              <Topping 
+                className={selectedToppings.find(
+                  selectedTopping => selectedTopping.name === name
+                  ) && 'active'}
+                onClick={() => toggleSelectedTopping(topping)}
+                key={name}
+                name={name} 
+                imgSrc={labelImage} 
+              />
+            )
+          })} 
+        </div>
+      </div>
+    );
+    const Item = ({
+      name,
+      price,
+    }) => (
+      <div>
+        <span>{name}</span>
+        &nbsp;
+        <span className="item-price">${price}</span>
+      </div>
+    )
+    const Summary = ({
+      selectedToppings = [],
+      basePrice = 0,
+    }) => (
+      <div>
+        <SectionTitle><h2>Summary</h2></SectionTitle>
+        <Item name="Pizza" price={basePrice} />
+        {selectedToppings.map(({ name, price }) => (<Item name={name} key={name} price={price} />))}
+        <hr />
+        <div className="total-price">
+          Total: ${selectedToppings.reduce((total, { price }) => (total + price), basePrice)}
+        </div>
+      </div>
+    );
+    const Button = ({ 
+      selectedToppings,
+      name,
+      address,
+      email,
+      contactNumber,
+      postcode,
+    }) => (
+      <div>
+        <button 
+          id="palce-order"
+          type="submit" 
+          onClick={() => {
+            if (!selectedToppings || !selectedToppings.length) {
+              return;
+            }
+            let totalPrice = 9.99;
+            selectedToppings.forEach(({ price }) => {
+              totalPrice += price;
+            });
+            
+            alert(`Thx ${name}, 
+            your order details: ${selectedToppings.map(({ 
+            name }) => name).join(', ')}, price:${totalPrice.toFixed(2)}. 
+            
+            Your pizza will delivery to ${address}, postcode:${postcode}
+            We will contact you by this phone number: ${contactNumber}
+            Please check your email ${email} for details.`);
+          }}
+        >
+          Place order
+        </button>  
+      </div>
+    );
+    class PizzaCreatorApp extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          name: '',
+          email: '',
+          address: '',
+          postcode: '',
+          confirmEmail: '',
+          contactNumber: '',
+          toppings: [{
+            name: 'Anchovy',
+            labelImage: './assets/anchovy.svg',
+            price: 0.99,
+          }, {
+            name: 'Bacon',
+            labelImage: './assets/bacon.svg',
+            price: 0.99,
+          }, {
+            name: 'Basil',
+            labelImage: './assets/basil.svg',
+            price: 0.99,
+          }, {
+            name: 'Chili',
+            labelImage: './assets/chili.svg',
+            price: 0.99,
+          }, {
+            name: 'Mozzarella',
+            labelImage: './assets/mozzarella.svg',
+            price: 0.99,
+          }, {
+            name: 'Mushroom',
+            labelImage: './assets/mushroom.svg',
+            price: 0.99,
+          }, {
+            name: 'Olive',
+            labelImage: './assets/olive.svg',
+            price: 0.99,
+          }, {
+            name: 'Onion',
+            labelImage: './assets/onion.svg',
+            price: 0.99,
+          }, {
+            name: 'Pepper',
+            labelImage: './assets/pepper.svg',
+            price: 0.99,
+          }, {
+            name: 'Pepperoni',
+            labelImage: './assets/pepperoni.svg',
+            price: 0.99,
+          }, {
+            name: 'Peppers',
+            labelImage: './assets/peppers.svg',
+            price: 0.99,
+          }, {
+            name: 'Sweetcorn',
+            labelImage: './assets/sweetcorn.svg',
+            price: 0.99,
+          }],
+          selectedToppings: [],
+          basePrice: 9.99,
+        };
+        this.toggleSelectedTopping = this.toggleSelectedTopping.bind(this);
+        this.onNameChange = this.onNameChange.bind(this);
+        this.onEmailChange = this.onEmailChange.bind(this);
+        this.onAddressChange = this.onAddressChange.bind(this);
+        this.onPostcodeChange = this.onPostcodeChange.bind(this);
+        this.onConfirmEmailChange = this.onConfirmEmailChange.bind(this);
+        this.onContactNumberChange = this.onContactNumberChange.bind(this);
+        this.toggleSelectedTopping = this.toggleSelectedTopping.bind(this);
+        
+      }
+      onNameChange(value) {
+        this.setState({
+          name: value,
+        });
+      }
+      onEmailChange(value) {
+        this.setState({
+          email: value,
+        });
+      }
+      onAddressChange(value) {
+        this.setState({
+          address: value,
+        });
+      }
+      onPostcodeChange(value) {
+        this.setState({
+          postcode: value,
+        });
+      }
+      onConfirmEmailChange(value) {
+        this.setState({
+          confirmEmail: value,
+        });
+      }
+      onContactNumberChange(value) {
+        this.setState({
+          contactNumber: value,
+        });
+      }
+      toggleSelectedTopping(topping) {
+        const { selectedToppings } = this.state;
+        const { name } = topping;
+        const isActive = selectedToppings.find(selectedTopping => selectedTopping.name === name);
+        if (isActive) {
+         // let result = [];
+          this.setState({
+            selectedToppings: selectedToppings.filter(selectedTopping => (selectedTopping.name !== name)),
+          });
+          return;
+        }
+        this.setState({
+          selectedToppings: [
+            ...this.state.selectedToppings,
+            topping,
+          ]
+        });
+      }
+      render() {
+        const { 
+          toppings, 
+          selectedToppings, 
+          basePrice, 
+          name, 
+          address, 
+          email,
+          postcode,
+          contactNumber,
+          confirmEmail,
+        } = this.state;
+        return (
+          <div>
+            <Form 
+              name={name} 
+              onNameChange={this.onNameChange} 
+              email={email} 
+              onEmailChange={this.onEmailChange} 
+              address={address}
+              onAddressChange={this.onAddressChange} 
+              postcode={postcode} 
+              onPostcodeChange={this.onPostcodeChange} 
+              contactNumber={contactNumber} 
+              onContactNumberChange={this.onContactNumberChange} 
+              confirmEmail={confirmEmail}
+              onConfirmEmailChange={this.onConfirmEmailChange} 
+             />
+            <Toppings 
+              toppings={toppings} 
+              selectedToppings={selectedToppings} 
+              toggleSelectedTopping={this.toggleSelectedTopping} 
+            />
+            <Summary selectedToppings={selectedToppings} basePrice={basePrice} />
+            <Button 
+              selectedToppings={selectedToppings} 
+              name={name} 
+              email={email} 
+              address={address}
+              postcode={postcode}
+              contactNumber={contactNumber}
+            />
+          </div>
+        )
+      }
+    }
+    ReactDOM.render(<PizzaCreatorApp />, document.querySelector('#app'));
+  </script>
+</head>
+
+<body>
+  <h1 style="display: none;">Pizza Creator</h1>
+  <div class="container">
+    <div class="item item-left">
+      <div id="pizzar">
+        <div id="pizzar-board">
+          <div id="pizzar-base">
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="item item-right">
+      <div id="app"></div>
+    </div>
+</body>
+
+</html>
