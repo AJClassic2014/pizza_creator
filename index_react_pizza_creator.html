@@ -10,7 +10,6 @@
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js" crossorigin></script>
   <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
-
   <script type="text/babel" data-presets="react">
     const SectionTitle = ({
       children
@@ -20,7 +19,8 @@
     const TextBox = ({ title, value, onChange }) => (
       <div className="textBox">
         <label>{title}</label>
-        <input value={value} onChange={({ target: { value }}) => onChange(value)} type="text" />  
+        <input value={value} onChange={({ 
+          target: { value }}) => onChange(value)} type="text" />  
       </div>
     )
     const Form = ({ 
@@ -129,7 +129,6 @@
             selectedToppings.forEach(({ price }) => {
               totalPrice += price;
             });
-            
             alert(`Thx ${name}, 
             your order details: ${selectedToppings.map(({ 
             name }) => name).join(', ')}, price:${totalPrice.toFixed(2)}. 
@@ -212,8 +211,7 @@
         this.onPostcodeChange = this.onPostcodeChange.bind(this);
         this.onConfirmEmailChange = this.onConfirmEmailChange.bind(this);
         this.onContactNumberChange = this.onContactNumberChange.bind(this);
-        this.toggleSelectedTopping = this.toggleSelectedTopping.bind(this);
-        
+        this.toggleSelectedTopping = this.toggleSelectedTopping.bind(this);       
       }
       onNameChange(value) {
         this.setState({
@@ -312,7 +310,6 @@
     ReactDOM.render(<PizzaCreatorApp />, document.querySelector('#app'));
   </script>
 </head>
-
 <body>
   <h1 style="display: none;">Pizza Creator</h1>
   <div class="container">
@@ -329,5 +326,4 @@
       <div id="app"></div>
     </div>
 </body>
-
 </html>

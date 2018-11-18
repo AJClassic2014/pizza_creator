@@ -62,55 +62,38 @@ var toppings = [
     price: 0.99
   }
 
-
-
 ];
 
 var pressedButton = [];
 
 function toppingOnClick(topping) {
   var selectedName = topping.topping_name;
-
-
   return function () {
-
     if (pressedButton.includes(selectedName)) {
       var index = pressedButton.indexOf(selectedName);
       pressedButton.splice(index, 1);
-      //add blue color effect
       document.getElementById(selectedName).classList.remove('active');
-
       var remove_list = document.getElementById(`list_item_${selectedName}`)
       remove_list.parentNode.removeChild(remove_list);
-      //calculate the total price
       sum = sum - topping.price;
       document.querySelector(".total-price").innerText = "Total:$" + sum.toFixed(2);
     }
     else {
-      //add blue color effect
       pressedButton.push(topping.topping_name);
-
       document.getElementById(selectedName).classList.add('active');
-      //generate topping list
       var item_name = document.createElement('span');
       item_name.innerText = selectedName;
-
       var price = document.createElement('span');
       price.innerText = "$" + topping.price;
-
       var topping_list_item = document.createElement('li');
       topping_list_item.appendChild(item_name);
       topping_list_item.appendChild(price);
       topping_list_item.id = `list_item_${selectedName}`;
       document.querySelector('.list-toppings').appendChild(topping_list_item);
-      //calculate the total price
       sum = sum + topping.price;
       document.querySelector(".total-price").innerText = "Total:$" + sum.toFixed(2);
     }
-
   }
-
-
 }
 
 function createToppingsForm() {
@@ -121,34 +104,21 @@ function createToppingsForm() {
     btn.type = 'button';
     btn.id = topping.topping_name;
     btn.classList.add('button');
-    //debugger;
     var result = toppingOnClick(topping);
-
     btn.onclick = result;
-
-
-    //create img
     var topping_img = document.createElement('img');
     topping_img.src = topping.labelSource;
-    //create span
     var topping_span = document.createElement('span');
-    //put text into span
     topping_span.innerText = topping.topping_name;
-    //append contents to each button
     btn.appendChild(topping_img);
     btn.appendChild(topping_span);
-    //append each button to topping area
     document.querySelector('#new-toppings-area').appendChild(btn);
-
   });
-
   document.querySelector(".total-price").innerText = "Total:$9.99";
 
 }
 
 function createToppings() {
-
-
   createToppingsForm();
 }
 
